@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_batch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.crossref.org/schema/5.3.0 https://www.crossref.org/schemas/crossref5.3.0.xsd"
+           xmlns="http://www.crossref.org/schema/5.3.0" xmlns:jats="http://www.ncbi.nlm.nih.gov/JATS1"
+           xmlns:fr="http://www.crossref.org/fundref.xsd" xmlns:ai="http://www.crossref.org/AccessIndicators.xsd"
+           xmlns:mml="http://www.w3.org/1998/Math/MathML" version="5.3.0">
+    <head>
+        <doi_batch_id>{{ var.batch_id }}</doi_batch_id>
+        <timestamp>{{ var.timestamp }}</timestamp>
+        <depositor>
+            <depositor_name>{{ var.institution }}</depositor_name>
+            <email_address>{{ var.email }}</email_address>
+        </depositor>
+        <registrant>Crossref</registrant>
+    </head>
+    <body>
+    <database>
+        <database_metadata language="en">
+            <titles>
+                <title>{{ var.title }}</title>
+            </titles>
+            <institution>
+                <institution_name>{{ var.institution }}</institution_name>
+            </institution>
+        </database_metadata>
+        <dataset dataset_type="collection">
+        {%- for i in range(var.authors|length) %}
+            {%- if i==0 %}
+            <contributors>
+                <person_name contributor_role="author" sequence="first">
+                    <given_name>{{ var.authors[i].split(", ")[0] }}</given_name>
+                    <surname>{{ var.authors[i].split(", ")[-1] }}</surname>
+                </person_name>
+            </contributors>
+            {%- else %}
+            <contributors>
+                <person_name contributor_role="author">
+                    <given_name>{{ var.authors[i].split(", ")[0] }}</given_name>
+                    <surname>{{ var.authors[i].split(", ")[-1] }}</surname>
+                </person_name>
+            </contributors>
+            {%- endif %}
+        {%- endfor %}
+            <titles>
+                <title>
+                    {{ var.title }}
+                </title>
+            </titles>
+            <doi_data>
+                <doi>
+                    {{ var.id }}
+                </doi>
+                <resource>
+                    {{ var.baseurl }}/dataset.xhtml?persistentId=doi:{{ var.id }}
+                </resource>
+            </doi_data>
+        </dataset>
+    </database>
+    </body>
+</doi_batch>
